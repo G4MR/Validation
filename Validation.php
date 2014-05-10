@@ -226,7 +226,8 @@ class Validation
      * Store array of custom callback rule error messages
      * @param [array] $messages [description]
      */
-    public function setMessages($messages) {
+    public function setMessages($messages) 
+    {
         if(!empty($messages) && is_array($messages)) {
             $this->messages = $messages;
         }
