@@ -179,7 +179,7 @@ class Validation
 
         //handle rules
         $rules  = trim($rules);
-        $rules  = @explode('|', $rules);
+        $rules  = explode('|', $rules);
 
         if(!is_array($rules) && empty($rules)) {
             return;
@@ -226,8 +226,7 @@ class Validation
      * Store array of custom callback rule error messages
      * @param [array] $messages [description]
      */
-    public function setMessages($messages) 
-    {
+    public function setMessages($messages) {
         if(!empty($messages) && is_array($messages)) {
             $this->messages = $messages;
         }
@@ -271,7 +270,8 @@ class Validation
         return $this;
     }
 
-    public function stopField($field) {
+    public function stopField($field) 
+    {
         $this->fields_stop[] = $field;
         return $this;
     }
