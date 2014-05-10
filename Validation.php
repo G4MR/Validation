@@ -46,7 +46,8 @@ class Validation
 
     }
 
-    public function debug() {
+    public function debug() 
+    {
         var_dump($this->input, $this->rules_array, $this->messages, $this->fields_stop, $this->rules_stop, static::$callbacks);
     }
 
@@ -54,7 +55,7 @@ class Validation
      * Check input validation
      * @return boolean 
      */
-    public function is_valid()
+    public function isValid()
     {
         //loop through rules & check validation
         foreach($this->rules_array as $field => $rules) {

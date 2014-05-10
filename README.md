@@ -18,7 +18,7 @@ $validation->setRules([
 ->stopFields(['name']);
 
 // $validation->debug();
-var_dump($validation->is_valid(), $validation->errors());
+var_dump($validation->isValid(), $validation->errors());
 ```
 
 ### Function Clarifications
