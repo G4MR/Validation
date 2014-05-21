@@ -17,7 +17,7 @@ $validation->setRules([
 ->stopRules(['name' => 'required|length'])
 ->stopFields(['name']);
 
-//passing variables
+//passing variable parameters
 $length = 5;
 $validation->setRules([
 	'name' => [
