@@ -15,6 +15,8 @@
 
 namespace Selfish;
 
+use Selfish\Func;
+
 class Validation 
 {
     protected $input            = [];
@@ -173,52 +175,66 @@ class Validation
      */
     public function setRule($field, $rules, $messages = [])
     {
+        //set messages
         $this->setMessages($messages);
-        
-        $field  = trim($field);
+
+        $rules_array    = [];
+        $field          = trim($field);
 
         //handle rules
-        $rules  = trim($rules);
-        $rules  = explode('|', $rules);
-
-        if(!is_array($rules) && empty($rules)) {
-            return;
+        if(is_array($rules)) {
+            $rules_array = $rules;
         }
 
-        foreach($rules as $rule) {
-            
-            //handle individual rules
-            $rule = trim($rule);
-            if(empty($rule)) continue;
+        if(!is_array($rules) && !empty($rules)) {
 
-            $rule_name      = null;
-            $rule_params    = [];
+            $rules          = trim($rules);
+            $rules          = explode('|', $rules);
 
-            $rule_data      = @explode(':', $rule);
-            if(!is_array($rule_data) && !empty($rule_data)) {
-                $rule_name = $rule_data;
-            }
+            foreach($rules as $rule) {
 
-            if(is_array($rule_data) && count($rule_data) == 1) {
-                $rule_name = $rule_data[0];
-            }
+                //check params
+                $rule       = trim($rule);
+                $rule_info  = explode(':', $rule);
 
-            if(is_array($rule_data) && count($rule_data) > 1) {
-                $params     = trim($rule_data[1]);
-                $rule_name  = $rule_data[0];
+                if(count($rule_info) < 2) {
+                    //assign rule w/ no parameters
+                    if(isset($rule_info[0])) {
+                        $rules_array[ $rule_info[0] ] = [];
+                    }
+                    continue;
+                }
 
-                $params     = @explode(',', $params);
+                $rule       = $rule_info[0];
+                $params     = explode(',', $rule_info[1]);
+
+                $params_array = [];
                 foreach($params as $param) {
-                    $param  = trim($param);
+                    $param = trim($param);
                     if(!empty($param)) {
-                        $param = preg_match('/^[0-9]+/', $param) ? (int) $param : $param;
-                        $rule_params[] = $param;
+                        $params_array[] = $param;
                     }
                 }
-            }
 
-            $this->rules_array[$field][$rule_name] = $rule_params;
+                $rules_array[$rule] = $params_array;
+            }
         }
+
+        //assign empty params to empty rules
+        $rules_array = Func::fill_keys($rules_array, []);
+
+        foreach($rules_array as $rule => $params) {
+            $params_array = [];
+            foreach($params as $param) {
+                $param = trim($param);
+                if(!empty($param)) {
+                    $param = preg_match('/^[0-9]+/', $param) ? (int) $param : $param;
+                    $params_array[] = $param;
+                }
+            }
+            $this->rules_array[$field][$rule] = $params_array;
+        }
+
         return $this;
     }
 

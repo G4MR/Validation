@@ -12,11 +12,19 @@ $messages = [
 ];
 $validation->setRules([
 	'name' => 'required|length:5|min:3',
-	'email' => 'required|email'
+	'email' => 'required|email',
 ], $messages)
 ->stopRules(['name' => 'required|length'])
 ->stopFields(['name']);
 
+//passing variables
+$length = 5;
+$validation->setRules([
+	'name' => [
+		'required',
+		'length' => [$length]
+	]
+]);
 // $validation->debug();
 var_dump($validation->isValid(), $validation->errors());
 ```
@@ -27,7 +35,7 @@ var_dump($validation->isValid(), $validation->errors());
 processing the next set of validation rules that you've provided? Well
 this function allows you to do that.
 
-* `stopFileds()` - similar to stopRules except it stops processing errors
+* `stopFields()` - similar to stopRules except it stops processing errors
 until all the rules for the current validation is set.  So you need to 
 order them accordingly.
 
